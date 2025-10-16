@@ -1,0 +1,21 @@
+# Django and Django REST Framework
+Django>=4.2.0,<5.0.0
+djangorestframework>=3.14.0
+
+# Image processing
+Pillow>=10.0.0
+pytesseract>=0.3.10
+
+# Task queue and caching
+celery>=5.3.0
+redis>=4.6.0
+
+# API documentation
+drf-spectacular>=0.26.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Database (uncomment as needed)
+# psycopg2-binary>=2.9.0  # For PostgreSQL
+# mysqlclient>=2.2.0      # For MySQL
