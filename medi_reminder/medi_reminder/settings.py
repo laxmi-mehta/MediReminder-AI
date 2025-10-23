@@ -217,3 +217,9 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Tesseract OCR Configuration
+# Configure the path to the Tesseract executable via environment variable.
+# Example on Windows: C:\\Program Files\\Tesseract-OCR\\tesseract.exe
+# Example on Linux/macOS: /usr/bin/tesseract
+TESSERACT_CMD = os.getenv('TESSERACT_CMD', '')
