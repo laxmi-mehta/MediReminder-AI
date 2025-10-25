@@ -69,8 +69,8 @@ def _preprocess_image(image: Image.Image) -> Image.Image:
 
     return image
 
-#Not used in the project
-def extract_prescription_data(image_path: str) -> str:
+
+def extract_text_from_image(image_path: str) -> str:
     try:
         _configure_tesseract_binary()
 

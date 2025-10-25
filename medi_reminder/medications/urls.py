@@ -17,10 +17,11 @@ router.register(r'prescriptions', viewsets.PrescriptionViewSet, basename='prescr
 urlpatterns = [
     # Include router URLs for ViewSet endpoints
     path('api/', include(router.urls)),
+
+    # OCR Upload endpoint
+    path('ocr/upload/', OCRUploadView.as_view(), name='ocr-upload'),
     
-    # Additional URL patterns for function-based views
-    path('search/', views.MedicationSearchView.as_view(), name='medication_search'),
-    path('medication/<int:medication_id>/', views.MedicationDetailView.as_view(), name='medication_detail'),
-    path('user-medications/', views.user_medications, name='user_medications'),
-    path('dosage/<int:dosage_id>/', views.DosageManagementView.as_view(), name='dosage_management'),
+    # Prescription management endpoints
+    path('prescriptions/', PrescriptionListView.as_view(), name='prescription-list'),
+    path('prescriptions/<int:prescription_id>/', PrescriptionDetailView.as_view(), name='prescription-detail'),
 ]
