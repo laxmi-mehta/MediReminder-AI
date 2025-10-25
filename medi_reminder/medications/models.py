@@ -37,21 +37,70 @@ class Medication(models.Model):
 
 class Prescription(models.Model):
     """
-    Model representing a prescription image.
-    
-    Stores prescription images and their OCR extracted text
-    for medication recognition and processing.
+    Model to store uploaded prescription images and basic prescription details.
+    Each prescription is linked to a user and can have multiple medication items.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='prescriptions/')
-    extracted_text = models.TextField(blank=True)
-    processed = models.BooleanField(default=False)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='prescriptions',
+        help_text="User who uploaded this prescription"
+    )
+    doctor_name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Name of the prescribing doctor"
+    )
+    image = models.ImageField(
+        upload_to='prescriptions/',
+        help_text="Uploaded prescription image"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="Timestamp when prescription was uploaded"
+    )
+
     class Meta:
-        ordering = ['-uploaded_at']
+        ordering = ['-created_at']
         verbose_name = 'Prescription'
         verbose_name_plural = 'Prescriptions'
-    
+
     def __str__(self):
-        return f"Prescription - {self.user.username} ({self.uploaded_at.strftime('%Y-%m-%d')})"
+        return f"Prescription #{self.id} - {self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"
+
+
+class PrescriptionItem(models.Model):
+    """
+    Model to store individual medication items extracted from a prescription.
+    Each item represents one medication with its dosage and frequency details.
+    """
+    prescription = models.ForeignKey(
+        Prescription,
+        on_delete=models.CASCADE,
+        related_name='items',
+        help_text="Parent prescription this item belongs to"
+    )
+    medication_name = models.CharField(
+        max_length=200,
+        help_text="Name of the medication"
+    )
+    dosage = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Dosage information (e.g., '500mg', '2 tablets')"
+    )
+    frequency = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Frequency of medication (e.g., 'twice daily', 'after meals')"
+    )
+
+    class Meta:
+        verbose_name = 'Prescription Item'
+        verbose_name_plural = 'Prescription Items'
+
+    def __str__(self):
+        return f"{self.medication_name} - {self.dosage or 'No dosage'}"

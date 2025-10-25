@@ -5,7 +5,7 @@ This module configures the Django admin interface for medication-related models.
 """
 
 from django.contrib import admin
-from .models import Medication, Prescription
+from .models import Medication, Prescription, PrescriptionItem
 
 
 @admin.register(Medication)
@@ -52,26 +52,42 @@ class PrescriptionAdmin(admin.ModelAdmin):
     Provides interface for managing prescriptions in Django admin.
     """
     list_display = [
-        'user', 'image', 'processed', 'uploaded_at'
+        'user', 'image', 'doctor_name', 'created_at'
     ]
     list_filter = [
-        'processed', 'uploaded_at'
+        'doctor_name', 'created_at'
     ]
     search_fields = [
-        'user__username', 'extracted_text'
+        'user__username', 'doctor_name'
     ]
-    ordering = ['-uploaded_at']
-    readonly_fields = ['uploaded_at']
+    ordering = ['-created_at']
+    readonly_fields = ['created_at']
     
     fieldsets = (
         ('Basic Information', {
             'fields': ('user', 'image')
         }),
         ('Processing', {
-            'fields': ('extracted_text', 'processed')
+            'fields': ('doctor_name',)
         }),
         ('Timestamps', {
-            'fields': ('uploaded_at',),
+            'fields': ('created_at',),
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(PrescriptionItem)
+class PrescriptionItemAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for PrescriptionItem model.
+    
+    Provides interface for managing prescription items in Django admin.
+    """
+    list_display = [
+        'prescription', 'medication_name', 'dosage', 'frequency'
+    ]
+    list_filter = [
+        'dosage', 'frequency'
+    ]
+    
