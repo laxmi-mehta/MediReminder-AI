@@ -19,9 +19,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
 
     # OCR Upload endpoint
-    path('ocr/upload/', OCRUploadView.as_view(), name='ocr-upload'),
+    path('ocr/upload/', views.OCRUploadView.as_view(), name='ocr-upload'),
     
     # Prescription management endpoints
-    path('prescriptions/', PrescriptionListView.as_view(), name='prescription-list'),
-    path('prescriptions/<int:prescription_id>/', PrescriptionDetailView.as_view(), name='prescription-detail'),
+    path('prescriptions/', views.PrescriptionListView.as_view(), name='prescription-list'),
+    path('prescriptions/<int:prescription_id>/', views.PrescriptionDetailView.as_view(), name='prescription-detail'),
 ]

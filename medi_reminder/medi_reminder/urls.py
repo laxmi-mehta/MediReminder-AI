@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 # Import ViewSets
 from medications.viewsets import MedicationViewSet, PrescriptionViewSet
 from reminders.viewsets import ReminderViewSet
+
 
 # Create main API router
 api_router = DefaultRouter()
@@ -47,6 +49,9 @@ urlpatterns = [
     path('', include('medications.urls')),
     path('', include('reminders.urls')),
     path('', include('ai.urls')),
+
+    # Serve React app
+    path('', TemplateView.as_view(template_name='index.html')),
 ]
 
 # Serve media files in development
