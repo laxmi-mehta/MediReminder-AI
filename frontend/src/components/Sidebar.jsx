@@ -5,7 +5,7 @@ function Sidebar() {
     { path: '/', label: 'Dashboard', icon: '📊' },
     { path: '/medications', label: 'Medications', icon: '💊' },
     { path: '/reminders', label: 'Reminders', icon: '⏰' },
-    { path: '/ocr', label: 'OCR Upload', icon: '📄' },
+    { path: '/ocr-upload', label: 'OCR Upload', icon: '📄' },
   ];
 
   return (
