@@ -24,6 +24,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 # Import ViewSets
 from medications.viewsets import MedicationViewSet, PrescriptionViewSet
 from reminders.viewsets import ReminderViewSet
+from users.viewsets import UserViewSet
 
 
 # Create main API router
@@ -31,6 +32,7 @@ api_router = DefaultRouter()
 api_router.register(r'medications', MedicationViewSet, basename='medication')
 api_router.register(r'prescriptions', PrescriptionViewSet, basename='prescription')
 api_router.register(r'reminders', ReminderViewSet, basename='reminder')
+api_router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     # Admin
@@ -45,10 +47,10 @@ urlpatterns = [
     path('api/', include(api_router.urls)),
     
     # App URLs
-    path('', include('users.urls')),
-    path('', include('medications.urls')),
-    path('', include('reminders.urls')),
-    path('', include('ai.urls')),
+    path('api/auth/', include('users.urls')),
+    path('api/', include('medications.urls')),
+    path('api/', include('reminders.urls')),
+    path('api/', include('ai.urls')),
 
     # Serve React app
     path('', TemplateView.as_view(template_name='index.html')),

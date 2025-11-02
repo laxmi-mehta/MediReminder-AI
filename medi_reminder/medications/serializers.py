@@ -21,7 +21,7 @@ class MedicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medication
         fields = [
-            'id', 'user', 'user_username', 'name', 'dosage', 'frequency',
+            'id', 'user', 'name', 'dosage', 'frequency',
             'start_date', 'end_date', 'instructions', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'user', 'created_at', 'updated_at']

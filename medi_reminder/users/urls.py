@@ -20,4 +20,10 @@ urlpatterns = [
     # Additional URL patterns for function-based views
     path('profile/', views.user_profile, name='user_profile'),
     path('logout/', views.user_logout, name='user_logout'),
+
+    path('register/', views.register_user, name='register'),
+    path('login/', views.login_user, name='login'),
+    path('user/', views.get_user, name='user'),
+    path('logout/', views.logout_user, name='logout'),
+
 ]

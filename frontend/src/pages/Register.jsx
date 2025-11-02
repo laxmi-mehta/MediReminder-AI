@@ -25,6 +25,8 @@ function Register() {
     
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
     }
     
     if (!formData.email.trim()) {
@@ -49,8 +51,11 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    console.log('[Register] Form submitted with data:', { ...formData, password: '***' });
+    
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
+      console.log('[Register] Validation errors:', newErrors);
       setErrors(newErrors);
       return;
     }
@@ -61,10 +66,13 @@ function Register() {
     try {
       const { password2, ...registerData } = formData;
       await register(registerData);
+      console.log('[Register] Registration successful!');
     } catch (err) {
-      setErrors({ 
-        submit: err.response?.data?.error || 'Registration failed. Please try again.' 
-      });
+      console.error('[Register] Registration error:', err);
+      const errorMessage = err.response?.data?.error || 
+                          err.response?.data?.message ||
+                          'Registration failed. Please try again.';
+      setErrors({ submit: errorMessage });
     } finally {
       setLoading(false);
     }

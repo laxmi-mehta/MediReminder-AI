@@ -29,25 +29,37 @@ function Dashboard() {
         axiosInstance.get('/api/medications/'),
       ]);
 
-      const today = new Date().toISOString().split('T')[0];
-      const todayReminders = remindersRes.data.filter((r) => {
-        const reminderDate = new Date(r.scheduled_time).toISOString().split('T')[0];
-        return reminderDate === today && !r.is_done;
-      });
-
-      const recentMeds = medicationsRes.data.slice(0, 5);
-
-      const upcomingCount = remindersRes.data.filter((r) => {
-        return new Date(r.scheduled_time) > new Date() && !r.is_done;
-      }).length;
-
-      setTodaysReminders(todayReminders);
-      setRecentMedications(recentMeds);
-      setStats({
-        totalMedications: medicationsRes.data.length,
-        activeReminders: remindersRes.data.filter((r) => !r.is_done).length,
-        upcomingDoses: upcomingCount,
-      });
+      console.log('Medications response:', medicationsRes.data);
+    console.log('Reminders response:', remindersRes.data);
+    
+    // Backend now returns arrays directly, not {results: []}
+    const medications = Array.isArray(medicationsRes.data) ? medicationsRes.data : [];
+    const reminders = Array.isArray(remindersRes.data) ? remindersRes.data : [];
+    
+    // Count total medications from all prescriptions
+    const totalMeds = medications.reduce((total, prescription) => {
+      return total + (prescription.items ? prescription.items.length : 0);
+    }, 0);
+    
+    // Filter for active reminders (you can adjust the logic)
+    const activeReminders = reminders.filter(r => r.is_active);
+    
+    // Filter for upcoming doses (next 24 hours)
+    const now = new Date();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const upcomingDoses = reminders.filter(r => {
+      const reminderDate = new Date(r.next_reminder_time);
+      return reminderDate >= now && reminderDate <= tomorrow;
+    });
+    
+    // Update state
+    setStats({
+      totalMedications: totalMeds,
+      activeReminders: activeReminders.length,
+      upcomingDoses: upcomingDoses.length
+    });
+    
+    setRecentMedications(medications.slice(0, 5)); // Show latest 5
     } catch (err) {
       console.error('Failed to fetch dashboard data:', err);
     } finally {

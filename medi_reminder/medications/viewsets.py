@@ -26,7 +26,7 @@ class MedicationViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'dosage', 'frequency']
-    filterset_fields = ['status', 'start_date', 'end_date']
+    filterset_fields = ['start_date', 'end_date']
     ordering_fields = ['name', 'start_date', 'created_at']
     ordering = ['-created_at']
     
